@@ -1,1 +1,1 @@
-# app-ia-etian-updater
+# ETIAN Updater

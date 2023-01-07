@@ -1,0 +1,53 @@
+{
+  "name": "app-etian-updater",
+  "version": "0.0.1",
+  "description": "ETIAN Updater",
+  "productName": "ETIAN Updater",
+  "author": "Warus <walkrus@gmail.com>",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "dev": "quasar dev -m electron",
+    "build": "quasar build -m electron",
+    "lint": "eslint --ext .js,.vue ./",
+    "test": "echo \"No test specified\" && exit 0",
+    "er": "electron-rebuild -f -m ./node_modules/pkcs11js"
+  },
+  "dependencies": {
+    "@electron/rebuild": "^3.2.10",
+    "@quasar/extras": "^1.0.0",
+    "@volar/vue-language-plugin-pug": "^1.0.9",
+    "axios": "^0.21.1",
+    "blob-stream": "^0.1.3",
+    "dayjs": "^1.11.6",
+    "dotenv": "^16.0.3",
+    "events": "^3.3.0",
+    "humanize": "^0.0.9",
+    "pdfkit": "^0.13.0",
+    "pinia": "^2.0.11",
+    "pkcs11js": "^1.3.1",
+    "pug": "^3.0.2",
+    "quasar": "^2.6.0",
+    "uuid": "^9.0.0",
+    "validator": "^13.7.0",
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.0"
+  },
+  "devDependencies": {
+    "@quasar/app-vite": "^1.0.0",
+    "autoprefixer": "^10.4.2",
+    "electron": "^21.3.1",
+    "electron-packager": "^17.1.1",
+    "eslint": "^8.10.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-vue": "^9.0.0",
+    "postcss": "^8.4.14"
+  },
+  "engines": {
+    "node": "^19 || ^19.2 || ^18 || ^16 || ^14.19",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  }
+}
