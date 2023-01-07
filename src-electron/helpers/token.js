@@ -9,8 +9,8 @@ const { FLASH_PIN } = process.env
 const libAssoc = {
   'arm64-darwin': '/Library/Aktiv Co/Rutoken ECP/lib/librtpkcs11ecp.dylib',
   'macos-x86_64': '/Library/Aktiv Co/Rutoken ECP/lib/librtpkcs11ecp.dylib',
-  'x64-win32': '../assets/lib/windows-x86_64/rtpkcs11ecp.dll',
-  'x86-win32': '../assets/lib/windows-x86/rtpkcs11ecp.dll',
+  'x64-win32': '/assets/lib/windows-x86_64/rtpkcs11ecp.dll',
+  'x86-win32': '/assets/lib/windows-x86/rtpkcs11ecp.dll',
 };
 const PARAMS_ARR = ['tmp', 'id', 'name', 'version'];
 
@@ -36,11 +36,10 @@ async function getLib(){
     : path.join(process.cwd(), libAssoc[currentPlatform]);
 
   if(['x64-win32','x86-win32'].includes(currentPlatform)){
-    const userData = app.getPath('userData')
-    const libUserData = path.join(userData,'rtpkcs11ecp.dll')
+    const libUserData = path.join(app.getPath('userData'),'rtpkcs11ecp.dll')
 
     if(!fs.existsSync(libUserData)) {
-      await fsAsync.copyFile(libAssoc[currentPlatform],libUserData)
+      await fsAsync.copyFile(path.join(__dirname,libAssoc[currentPlatform]),libUserData)
     }
 
     lib = libUserData
@@ -159,6 +158,7 @@ export function tokenFinalize() {
 ipcMain.handle('token-init', ()=> initToken())
 ipcMain.handle('token-finalize', ()=> tokenFinalize())
 ipcMain.handle('token-read', ()=> readFlashParams())
+ipcMain.handle('test-cwd', ()=> __dirname)
 
 
 

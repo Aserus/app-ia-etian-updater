@@ -38,6 +38,7 @@ export default defineComponent({
 
     const checkFlash = async () => {
       try {
+        console.log('test-cwd', await window.flashApi.testCwd());
         const compInfo = await window.flashApi.getCompInfo();
         console.log(compInfo);
         await window.flashApi.tokenInit();

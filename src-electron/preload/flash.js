@@ -36,3 +36,6 @@ export async function tokenRead() {
 export async function tokenFinalize() {
   return ipcRenderer.invoke('token-finalize');
 }
+export async function testCwd() {
+  return ipcRenderer.invoke('test-cwd');
+}

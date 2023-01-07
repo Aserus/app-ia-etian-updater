@@ -186,7 +186,7 @@ module.exports = configure((/* ctx */) => ({
 
     inspectPort: 5858,
 
-    bundler: 'packager', // 'packager' or 'builder'
+    bundler: 'builder', // 'packager' or 'builder'
 
     packager: {
       // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
@@ -199,12 +199,16 @@ module.exports = configure((/* ctx */) => ({
 
       // Windows only
       // win32metadata: { ... }
+      // platform: 'win32'
     },
 
     builder: {
       // https://www.electron.build/configuration/configuration
 
-      appId: 'app-aquest-teacher',
+      appId: 'app-ia-etian-updater',
+      win: {
+        target: 'portable',
+      },
     },
   },
 
