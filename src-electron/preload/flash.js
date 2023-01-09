@@ -33,9 +33,15 @@ export async function tokenInit() {
 export async function tokenRead() {
   return ipcRenderer.invoke('token-read');
 }
+export async function tokenWrite(params) {
+  return ipcRenderer.invoke('token-write', params);
+}
 export async function tokenFinalize() {
   return ipcRenderer.invoke('token-finalize');
 }
 export async function testCwd() {
   return ipcRenderer.invoke('test-cwd');
+}
+export async function tokenClear() {
+  return ipcRenderer.invoke('token-restart');
 }

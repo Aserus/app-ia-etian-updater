@@ -128,7 +128,7 @@ export async function readFlashParams() {
   return out;
 }
 
-export async function writeFlashParam(name, value) {
+export async function writeFlashParam(params) {
   const out = null;
   try {
     const slots = pkcs11.C_GetSlotList(true);
@@ -139,7 +139,12 @@ export async function writeFlashParam(name, value) {
     const session = pkcs11.C_OpenSession(slot, pkcs11js.CKF_RW_SESSION | pkcs11js.CKF_SERIAL_SESSION);
     pkcs11.C_Login(session, 1, FLASH_PIN);
 
-    setAttrVal(session, name, value);
+    for(let key of Object.keys(params)){
+      console.log(key, params[key])
+      setAttrVal(session, key, params[key]);
+    }
+
+    
 
     pkcs11.C_Logout(session);
     pkcs11.C_CloseSession(session);
@@ -161,5 +166,15 @@ ipcMain.handle('token-read', ()=> readFlashParams())
 ipcMain.handle('test-cwd', ()=> __dirname)
 
 
+ipcMain.handle('token-write', async (e,params)=> {
 
+
+    
+
+  // for(let key of Object.keys(params)){
+    await writeFlashParam(params)
+  // }
+ 
+  return true;
+})
 

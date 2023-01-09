@@ -1,21 +1,27 @@
 import path from 'path';
 
-import { exec } from 'child_process';
-import { ipcMain } from 'electron';
+import { execFile } from 'child_process';
+import { app, ipcMain } from 'electron';
+import fs, { promises as fsAsync } from 'fs';
 
-const execAsync = (command) => new Promise((resolve, reject) => {
-  exec(command, (err, stdout) => (err ? reject(err) : resolve(stdout)));
+const execAsync = (command, args) => new Promise((resolve, reject) => {
+  execFile(command, args, (err, stdout) => (err ? reject(err) : resolve(stdout)));
 });
 
-const testPath = path.resolve(__dirname, 'utils/rtadmin.exe');
-console.log(testPath);
+// const testPath = path.resolve(__dirname, 'utils/rtadmin.exe');
+// console.log(testPath);
 
-const RTADMIN = path.join(process.cwd(), 'utils', 'rtadmin.exe');
+// const RTADMIN = path.join(process.cwd(), 'utils', 'rtadmin.exe');
 
 export async function runClear() {
-  const command = `${RTADMIN} -q -f`;
-  const stdout = await execAsync(command);
+  const libUserData = path.join(app.getPath('userData'), 'rtadmin.exe');
+  console.log(libUserData);
+  if (!fs.existsSync(libUserData)) {
+    // await fsAsync.copyFile(path.join(__dirname, '/assets/utils/rtadmin.exe'), libUserData);
+    console.log(!fsAsync);
+  }
+  const stdout = await execAsync(libUserData, ['-q', '-f']);
   return stdout;
 }
 
-ipcMain.handle('token-clear', () => runClear());
+ipcMain.handle('token-restart', () => runClear());

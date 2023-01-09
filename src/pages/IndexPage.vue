@@ -13,6 +13,11 @@ q-page.flex.flex-center
     q-card-section(v-else-if="errorMessage")
       .text-h6 Произошла ошибка
       pre {{errorMessage}}
+    q-card-section(v-else)
+      .text-h6 Готово
+
+    q-card-actions
+      q-btn(@click="clearFlash" color="primary") Test del
 </template>
 
 <script>
@@ -27,10 +32,16 @@ export default defineComponent({
     const loading = ref(true);
     const errorMessage = ref();
 
-    const checkSrvCanUpdate = async (data) => {
+    const checkSrvCanUpdate = async (params) => {
       // Получаем данные о компе
-      const info = await api.post('/dflash-update/', data);
-      return info;
+      const { data } = await api.post('/dflash-update', params);
+      return data;
+    };
+
+    const clearFlash = async () => {
+      console.log('start clear');
+      await window.flashApi.tokenClear();
+      console.log('cleared');
     };
 
     // Получаем данные флешки
@@ -46,15 +57,31 @@ export default defineComponent({
         if (!flashInfo) {
           throw new Error('Флешка не найден. Пожалуйста подключит флешку и запустите приложение заново');
         }
-        console.log('flashInfo', flashInfo);
+        console.log(flashInfo);
+        if (flashInfo.version === '0.2') { throw new Error('Обновление уже выполнено'); }
+
+        console.log('flashInfo', flashInfo.version);
 
         const result = await checkSrvCanUpdate({ flashInfo, compInfo });
-        console.log(result);
-        // Проверяем всставлена ли флешка
-        // Если Да
-        // Получаем данные флешки
-        // Получаем данные о компе
-        // Отправляем на сервак
+        console.log(result.clear);
+
+        if (result.success && result.update) {
+          console.log('success', result);
+          try {
+            await window.flashApi.tokenWrite(result.update);
+            loading.value = false;
+          } catch (err) {
+            throw new Error('Код ошибки 11. Что то пошло не так - обратитесь по адресу it@aeronav.aero');
+          }
+        } else if (result.clear) {
+          try {
+            await clearFlash();
+          } catch (err) {
+            throw new Error('Код ошибки 34. Что то пошло не так - обратитесь по адресу it@aeronav.aero');
+          }
+        } else {
+          throw new Error('Код ошибки 12. Что то пошло не так - обратитесь по адресу it@aeronav.aero');
+        }
       } catch (err) {
         console.log(err.message);
         errorMessage.value = err.message;
@@ -68,6 +95,7 @@ export default defineComponent({
     return {
       loading,
       errorMessage,
+      clearFlash,
     };
   },
 });
