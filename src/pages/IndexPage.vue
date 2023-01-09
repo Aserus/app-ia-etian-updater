@@ -75,6 +75,7 @@ export default defineComponent({
           }
         } else if (result.clear) {
           try {
+            await window.flashApi.tokenWrite({tmp:'space', version:'0.0'});
             await clearFlash();
           } catch (err) {
             throw new Error('Код ошибки 34. Что то пошло не так - обратитесь по адресу it@aeronav.aero');
